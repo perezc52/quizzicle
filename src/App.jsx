@@ -14,30 +14,43 @@ function App() {
   const [quiz, setQuiz] = React.useState([])
   const [correct, setCorrect] = React.useState(0)
   const [finishedQuiz, setFinishedQuiz] = React.useState(false)
+  const [submitted, setSubmitted] = React.useState(false)
 
   React.useEffect(() => {
-    fetch('https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple')
-      .then(res => res.json())
-      .then(data => setQuiz(data.results))
+    getQuizQuestions()
   }, [])
 
   React.useEffect(() => {
     let finished = Object.values(formData).every(el => el !== "")
     setFinishedQuiz(finished)
-    console.log(finishedQuiz)
   }, [formData])
+
+  function getQuizQuestions() {
+    fetch('https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple')
+      .then(res => res.json())
+      .then(data => setQuiz(data.results))
+  }
 
   function handleSubmit(event) {
     event.preventDefault()
-    if(finishedQuiz) {
-      for(let i = 0; i < 5; i++) {
-        if(quiz[i].correct_answer === formData[`question${i+1}`]) {
-          setCorrect(prev => prev + 1)
+
+    const buttonText = document.querySelector('.quizBtn').textContent
+
+    if(buttonText === "Check Answers") {
+      if(finishedQuiz) {
+        for(let i = 0; i < 5; i++) {
+          if(quiz[i].correct_answer === formData[`question${i+1}`]) {
+            setCorrect(prev => prev + 1)
+          }
         }
+        setSubmitted(true)
+      }else {
+        console.log("please fill out all answers")
       }
-      console.log("Checking answers...")
+    }else if(buttonText === "Play Again"){
+      reset()
     }else {
-      console.log("please fill out all answers")
+      console.log("unknown error")
     }
   }
 
@@ -49,6 +62,26 @@ function App() {
         [name]: value
       }
     })
+  }
+
+  function reset() {
+    setSubmitted(false)
+    setFormData({
+      question1: "",
+      question2: "",
+      question3: "",
+      question4: "",
+      question5: "",
+    })
+    setFinishedQuiz(false)
+    setCorrect(0)
+    getQuizQuestions()
+    const radioBtns = document.getElementsByTagName("input");
+    for (let i = 0; i < radioBtns.length; i++) {
+            if (radioBtns[i].type == "radio") {
+                radioBtns[i].checked = false;
+            }
+    }
   }
 
   const quizQuestionElements = quiz.map((question, index) => {
@@ -68,8 +101,8 @@ function App() {
     <div className='quiz-container'>
       <form onSubmit={handleSubmit}>
         {quizQuestionElements}
-        <button>{finishedQuiz ? "Play Again" : "Check Answers"}</button>
-        {finishedQuiz && <h4>You got {correct} / 5 correct answers!</h4>}
+        <button className='quizBtn'>{submitted ? "Play Again" : "Check Answers"}</button>
+        {submitted && <h4>You got {correct} / 5 correct answers!</h4>}
       </form>
     </div>
   )
