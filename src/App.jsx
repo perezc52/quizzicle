@@ -68,7 +68,7 @@ function App() {
     <div className='quiz-container'>
       <form onSubmit={handleSubmit}>
         {quizQuestionElements}
-        <button>Check Answers</button>
+        <button>{finishedQuiz ? "Play Again" : "Check Answers"}</button>
         {finishedQuiz && <h4>You got {correct} / 5 correct answers!</h4>}
       </form>
     </div>
