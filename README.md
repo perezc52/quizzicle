@@ -16,7 +16,7 @@ In the future, I would like to add options for the user to select different diff
 ## Lessons Learned:
 
 
-This project helped me solidify my react skills even more and learned a lot about passing data between react components and scope. I also learned more about how to use javascript algorithms to do thigns such as shuffle data in an array. I also got a better grasp about making decisions in react such as knowing when and when not to use React.useEffect and useState.
+This project helped me solidify my react skills even more and learned a lot about passing data between react components and scope. I also learned more about how to use javascript algorithms to do things such as shuffle data in an array. I also got a better grasp about making decisions in react such as knowing when and when not to use React.useEffect and useState.
 
 
 
