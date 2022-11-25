@@ -102,7 +102,7 @@ function App() {
       <form onSubmit={handleSubmit}>
         {quizQuestionElements}
         <button className='quizBtn'>{submitted ? "Play Again" : "Check Answers"}</button>
-        {submitted && <h4>You got {correct} / 5 correct answers!</h4>}
+        {submitted ? <h4>You got {correct} / 5 correct answers!</h4> : <h4>Please fill out all answers</h4>}
       </form>
     </div>
   )
