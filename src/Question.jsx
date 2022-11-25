@@ -24,7 +24,7 @@ export default function Question(props) {
         return array;
       }
 
-    const shuffledAnswers = shuffleArray(allAnswerChoices)
+    const shuffledAnswers = shuffle(allAnswerChoices)
 
     return (
         <div className='question'>
