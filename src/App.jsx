@@ -28,7 +28,14 @@ function App() {
   function getQuizQuestions() {
     fetch('https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple')
       .then(res => res.json())
-      .then(data => setQuiz(data.results))
+      .then(data => {
+        setQuiz(data.results.map(el => {
+          return {
+            ...el,
+            shuffledAnswers: shuffle([el.correct_answer, el.incorrect_answers[0], el.incorrect_answers[1], el.incorrect_answers[2]])
+          }
+        }))
+      })
   }
 
   function handleSubmit(event) {
@@ -84,6 +91,21 @@ function App() {
     }
   }
 
+  function shuffle(array) {
+    let currentIndex = array.length,  randomIndex;
+
+    while (currentIndex != 0) {
+
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+  
+    return array;
+  }
+
   const quizQuestionElements = quiz.map((question, index) => {
     return (
       <Question 
@@ -92,6 +114,7 @@ function App() {
         question={question.question}
         answer={question.correct_answer}
         otherAnswers={question.incorrect_answers}
+        shuffledAnswers={question.shuffledAnswers}
         onChange={handleChange}
       />
     )

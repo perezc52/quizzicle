@@ -2,30 +2,6 @@ import React from 'react'
 
 export default function Question(props) {
 
-    let allAnswerChoices = [
-        props.answer,
-        props.otherAnswers[0],
-        props.otherAnswers[1],
-        props.otherAnswers[2],
-    ]
-
-    function shuffle(array) {
-        let currentIndex = array.length,  randomIndex;
-
-        while (currentIndex != 0) {
-
-          randomIndex = Math.floor(Math.random() * currentIndex);
-          currentIndex--;
-
-          [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex], array[currentIndex]];
-        }
-      
-        return array;
-      }
-
-    const shuffledAnswers = shuffle(allAnswerChoices)
-
     return (
         <div className='question'>
 
@@ -33,43 +9,43 @@ export default function Question(props) {
 
             <input
                 type="radio"
-                id={props.answer}
+                id={props.shuffledAnswers[0]}
                 name={`question${props.questionNumber}`}
-                value={props.answer}
+                value={props.shuffledAnswers[0]}
                 onChange={props.onChange}
                 className="radioBtn"
             />
-            <label className='radioBtn-text' htmlFor={props.answer}>{props.answer}</label>
+            <label className='radioBtn-text' htmlFor={props.shuffledAnswers[0]}>{props.shuffledAnswers[0]}</label>
 
             <input
                 type="radio"
-                id={props.otherAnswers[0]}
+                id={props.shuffledAnswers[1]}
                 name={`question${props.questionNumber}`}
-                value={props.otherAnswers[0]}
+                value={props.shuffledAnswers[1]}
                 onChange={props.onChange}
                 className="radioBtn"
             />
-            <label className='radioBtn-text' htmlFor={props.otherAnswers[0]}>{props.otherAnswers[0]}</label>
+            <label className='radioBtn-text' htmlFor={props.shuffledAnswers[1]}>{props.shuffledAnswers[1]}</label>
 
             <input
                 type="radio"
-                id={props.otherAnswers[1]}
+                id={props.shuffledAnswers[2]}
                 name={`question${props.questionNumber}`}
-                value={props.otherAnswers[1]}
+                value={props.shuffledAnswers[2]}
                 onChange={props.onChange}
                 className="radioBtn"
             />
-            <label className='radioBtn-text' htmlFor={props.otherAnswers[1]}>{props.otherAnswers[1]}</label>
+            <label className='radioBtn-text' htmlFor={props.shuffledAnswers[2]}>{props.shuffledAnswers[2]}</label>
 
             <input
                 type="radio"
-                id={props.otherAnswers[2]}
+                id={props.shuffledAnswers[3]}
                 name={`question${props.questionNumber}`}
-                value={props.otherAnswers[2]}
+                value={props.shuffledAnswers[3]}
                 onChange={props.onChange}
                 className="radioBtn"
             />
-            <label className='radioBtn-text' htmlFor={props.otherAnswers[2]}>{props.otherAnswers[2]}</label>
+            <label className='radioBtn-text' htmlFor={props.shuffledAnswers[3]}>{props.shuffledAnswers[3]}</label>
         </div>
     )
 }
