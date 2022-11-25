@@ -32,7 +32,8 @@ function App() {
         setQuiz(data.results.map(el => {
           return {
             ...el,
-            shuffledAnswers: shuffle([el.correct_answer, el.incorrect_answers[0], el.incorrect_answers[1], el.incorrect_answers[2]])
+            shuffledAnswers: shuffle([el.correct_answer, el.incorrect_answers[0], el.incorrect_answers[1], el.incorrect_answers[2]]),
+            question: cleanupString(el.question),
           }
         }))
       })
@@ -106,6 +107,14 @@ function App() {
     return array;
   }
 
+  function cleanupString(str) {
+    let newStr = str
+    console.log(newStr)
+    newStr = str.replaceAll(/&quot;|&#039;/g, `'`)
+    console.log(newStr)
+    return newStr
+  }
+
   const quizQuestionElements = quiz.map((question, index) => {
     return (
       <Question 
@@ -122,6 +131,7 @@ function App() {
 
   return (
     <div className='quiz-container'>
+      <h1 className='title'>Quizzicle</h1>
       <form onSubmit={handleSubmit}>
         {quizQuestionElements}
         <button className='quizBtn'>{submitted ? "Play Again" : "Check Answers"}</button>

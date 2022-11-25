@@ -1,10 +1,8 @@
 import React from 'react'
 
 export default function Question(props) {
-
     return (
         <div className='question'>
-
             <h1 className="question-text">{props.question}</h1>
 
             <input

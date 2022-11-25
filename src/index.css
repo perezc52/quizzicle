@@ -69,14 +69,15 @@ button:focus-visible {
 }
 
 .question {
-  margin: 35px 0;
+  margin: 20px 0;
   padding-bottom: 15px;
-  border-bottom: 1px solid gray;
+  /* border-bottom: 1px solid gray; */
 }
 
 .question-text {
   font-size: 20px;
   font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .radioBtn {
@@ -115,11 +116,19 @@ label, input:checked {
 
 .quizBtn {
   margin: 0;
+  background-color: #535bf2;
+  padding: 0.9em 1.5em;
 }
 
 h4 {
   display: inline-block;
   margin-left: 10px;
+}
+
+.title {
+  text-align: center;
+  font-size: 29px;
+  margin: 15px 0;
 }
 
 
