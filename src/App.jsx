@@ -84,6 +84,10 @@ function App() {
     setFinishedQuiz(false)
     setCorrect(0)
     getQuizQuestions()
+    const selectedAnswers = document.querySelectorAll('.question input[type="radio"]:checked+label')
+    selectedAnswers.forEach(label => {
+      label.style.backgroundColor = ''
+    })
     const radioBtns = document.getElementsByTagName("input");
     for (let i = 0; i < radioBtns.length; i++) {
             if (radioBtns[i].type == "radio") {
