@@ -1,6 +1,5 @@
 import React from 'react'
-import './App.css'
-import Question from './Question'
+import Question from './components/Question'
 
 function App() {
 
@@ -43,22 +42,23 @@ function App() {
     event.preventDefault()
 
     const buttonText = document.querySelector('.quizBtn').textContent
+    const selectedAnswers = document.querySelectorAll('.question input[type="radio"]:checked+label')
 
     if(buttonText === "Check Answers") {
       if(finishedQuiz) {
         for(let i = 0; i < 5; i++) {
           if(quiz[i].correct_answer === formData[`question${i+1}`]) {
             setCorrect(prev => prev + 1)
+            selectedAnswers[i].style.backgroundColor = 'green'
+          }else {
+            selectedAnswers[i].style.backgroundColor = 'red'
           }
         }
         setSubmitted(true)
-      }else {
-        console.log("please fill out all answers")
       }
-    }else if(buttonText === "Play Again"){
+    }
+    if(buttonText === "Play Again"){
       reset()
-    }else {
-      console.log("unknown error")
     }
   }
 
@@ -108,11 +108,10 @@ function App() {
   }
 
   function cleanupString(str) {
-    let newStr = str
-    console.log(newStr)
-    newStr = str.replaceAll(/&quot;|&#039;/g, `'`)
-    console.log(newStr)
-    return newStr
+    return str
+          .replaceAll(/&quot;|&#039;|&rsquo;|&apos;/g, `'`)
+          .replaceAll(/&amp;/g, `&`)
+          .replaceAll(/&eacute;/gi, `é`)
   }
 
   const quizQuestionElements = quiz.map((question, index) => {
@@ -123,7 +122,7 @@ function App() {
         question={question.question}
         answer={question.correct_answer}
         otherAnswers={question.incorrect_answers}
-        shuffledAnswers={question.shuffledAnswers}
+        shuffledAnswers={question.shuffledAnswers.map(el => cleanupString(el))}
         onChange={handleChange}
       />
     )
@@ -135,7 +134,7 @@ function App() {
       <form onSubmit={handleSubmit}>
         {quizQuestionElements}
         <button className='quizBtn'>{submitted ? "Play Again" : "Check Answers"}</button>
-        {submitted ? <h4>You got {correct} / 5 correct answers!</h4> : <h4>Please fill out all answers</h4>}
+        {submitted && <h4>You got {correct} / 5 correct answers!</h4>}
       </form>
     </div>
   )
