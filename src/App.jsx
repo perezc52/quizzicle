@@ -1,8 +1,12 @@
 import React from 'react'
 import Question from './components/Question'
+import Options from './components/Options'
+import { shuffle, cleanupString } from './quizUtils'
 
 function App() {
-
+  
+  const [category, setCategory] = React.useState('');
+  const [difficulty, setDifficulty] = React.useState('');
   const [formData, setFormData] = React.useState({
     question1: "",
     question2: "",
@@ -24,27 +28,13 @@ function App() {
     setFinishedQuiz(finished)
   }, [formData])
 
-  function getQuizQuestions() {
-    fetch('https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple')
-      .then(res => res.json())
-      .then(data => {
-        setQuiz(data.results.map(el => {
-          return {
-            ...el,
-            shuffledAnswers: shuffle([el.correct_answer, el.incorrect_answers[0], el.incorrect_answers[1], el.incorrect_answers[2]]),
-            question: cleanupString(el.question),
-          }
-        }))
-      })
-  }
-
   function handleSubmit(event) {
     event.preventDefault()
 
-    const buttonText = document.querySelector('.quizBtn').textContent
+    const action = document.querySelector('.quizBtn').getAttribute('data-action')
     const selectedAnswers = document.querySelectorAll('.question input[type="radio"]:checked+label')
 
-    if(buttonText === "Check Answers") {
+    if(action === "check") {
       if(finishedQuiz) {
         for(let i = 0; i < 5; i++) {
           if(quiz[i].correct_answer === formData[`question${i+1}`]) {
@@ -57,7 +47,7 @@ function App() {
         setSubmitted(true)
       }
     }
-    if(buttonText === "Play Again"){
+    if(action === "play-again"){
       reset()
     }
   }
@@ -70,6 +60,22 @@ function App() {
         [name]: value
       }
     })
+  }
+
+  function getQuizQuestions() {
+    let url
+    
+    fetch('https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple')
+      .then(res => res.json())
+      .then(data => {
+        setQuiz(data.results.map(el => {
+          return {
+            ...el,
+            shuffledAnswers: shuffle([el.correct_answer, el.incorrect_answers[0], el.incorrect_answers[1], el.incorrect_answers[2]]),
+            question: cleanupString(el.question),
+          }
+        }))
+      })
   }
 
   function reset() {
@@ -96,28 +102,6 @@ function App() {
     }
   }
 
-  function shuffle(array) {
-    let currentIndex = array.length,  randomIndex;
-
-    while (currentIndex != 0) {
-
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex], array[currentIndex]];
-    }
-  
-    return array;
-  }
-
-  function cleanupString(str) {
-    return str
-          .replaceAll(/&quot;|&#039;|&rsquo;|&apos;/g, `'`)
-          .replaceAll(/&amp;/g, `&`)
-          .replaceAll(/&eacute;/gi, `é`)
-  }
-
   const quizQuestionElements = quiz.map((question, index) => {
     return (
       <Question 
@@ -132,12 +116,16 @@ function App() {
     )
   })
 
+  console.log(category)
+  console.log(difficulty)
   return (
     <div className='quiz-container'>
       <h1 className='title'>Quizzicle</h1>
+      <Options setCategory={setCategory} setDifficulty={setDifficulty} difficulty={difficulty} category={category} getQuizQuestions={getQuizQuestions}/>
       <form onSubmit={handleSubmit}>
         {quizQuestionElements}
-        <button className='quizBtn'>{submitted ? "Play Again" : "Check Answers"}</button>
+        {!submitted && <button className='quizBtn' data-action="check">Check Answers</button>}
+        {submitted && <button className='quizBtn' data-action="play-again">Play Again</button>}
         {submitted && <h4>You got {correct} / 5 correct answers!</h4>}
       </form>
     </div>
