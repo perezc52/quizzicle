@@ -12,6 +12,8 @@ const Options = (props) => {
 
     function handleSubmit(e) {
         e.preventDefault()
+        props.reset()
+        props.getQuizQuestions(props.category, props.difficulty)
     }  
 
     return (
@@ -19,7 +21,7 @@ const Options = (props) => {
       <label>
         Select Category:
         <select value={props.category} onChange={handleCategoryChange}>
-          <option value="any">Any Category</option>
+          <option value="">Any Category</option>
           <option value="9">General Knowledge</option>
           <option value="10">Books</option>
           <option value="11">Film</option>
@@ -49,7 +51,7 @@ const Options = (props) => {
       <label>
         Select Difficulty:
         <select value={props.difficulty} onChange={handleDifficultyChange}>
-          <option value="any">Any Difficulty</option>
+          <option value="">Any Difficulty</option>
           <option value="easy">Easy</option>
           <option value="medium">Medium</option>
           <option value="hard">Hard</option>

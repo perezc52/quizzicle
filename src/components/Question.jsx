@@ -9,6 +9,7 @@ export default function Question(props) {
             <input
                 type="radio"
                 id={props.shuffledAnswers[0]}
+                disabled={props.submitted ? true : false}
                 name={`question${props.questionNumber}`}
                 value={props.shuffledAnswers[0]}
                 onChange={props.onChange}
@@ -19,6 +20,7 @@ export default function Question(props) {
             <input
                 type="radio"
                 id={props.shuffledAnswers[1]}
+                disabled={props.submitted ? true : false}
                 name={`question${props.questionNumber}`}
                 value={props.shuffledAnswers[1]}
                 onChange={props.onChange}
@@ -29,6 +31,7 @@ export default function Question(props) {
             <input
                 type="radio"
                 id={props.shuffledAnswers[2]}
+                disabled={props.submitted ? true : false}
                 name={`question${props.questionNumber}`}
                 value={props.shuffledAnswers[2]}
                 onChange={props.onChange}
@@ -39,6 +42,7 @@ export default function Question(props) {
             <input
                 type="radio"
                 id={props.shuffledAnswers[3]}
+                disabled={props.submitted ? true : false}
                 name={`question${props.questionNumber}`}
                 value={props.shuffledAnswers[3]}
                 onChange={props.onChange}

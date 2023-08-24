@@ -1,7 +1,7 @@
 import React from 'react'
 import Question from './components/Question'
 import Options from './components/Options'
-import { shuffle, cleanupString } from './quizUtils'
+import { shuffle, cleanupString, findElementsByText } from './quizUtils'
 
 function App() {
   
@@ -39,9 +39,13 @@ function App() {
         for(let i = 0; i < 5; i++) {
           if(quiz[i].correct_answer === formData[`question${i+1}`]) {
             setCorrect(prev => prev + 1)
-            selectedAnswers[i].style.backgroundColor = 'green'
+            selectedAnswers[i].style.backgroundColor = '#29AB87'
           }else {
-            selectedAnswers[i].style.backgroundColor = 'red'
+            selectedAnswers[i].style.backgroundColor = '#B31B1B'
+            let correctAnswer = findElementsByText(quiz[i].correct_answer)[6]
+            console.log(findElementsByText(quiz[i].correct_answer))
+            correctAnswer.style.outline = '2px solid #29AB87'
+            console.log(correctAnswer)
           }
         }
         setSubmitted(true)
@@ -62,10 +66,22 @@ function App() {
     })
   }
 
-  function getQuizQuestions() {
+  function getQuizQuestions(category, difficulty) {
+    console.log(category)
+    console.log(difficulty)
     let url
+    if(category && difficulty) {
+      url = `https://opentdb.com/api.php?amount=5&category=${category}&difficulty=${difficulty}&type=multiple`
+    }else if (category && !difficulty) {
+      url = `https://opentdb.com/api.php?amount=5&category=${category}&type=multiple`
+    }else if(!category && !difficulty) {
+      url = `https://opentdb.com/api.php?amount=5&type=multiple`
+    }else if(!category && difficulty) {
+      url = `https://opentdb.com/api.php?amount=5&difficulty=${difficulty}&type=multiple`
+    }
+    console.log(url)
     
-    fetch('https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple')
+    fetch(url)
       .then(res => res.json())
       .then(data => {
         setQuiz(data.results.map(el => {
@@ -89,10 +105,11 @@ function App() {
     })
     setFinishedQuiz(false)
     setCorrect(0)
-    getQuizQuestions()
-    const selectedAnswers = document.querySelectorAll('.question input[type="radio"]:checked+label')
+    getQuizQuestions(category, difficulty)
+    const selectedAnswers = document.querySelectorAll('.question input[type="radio"]+label')
     selectedAnswers.forEach(label => {
-      label.style.backgroundColor = ''
+      label.style.backgroundColor = '';
+      label.style.outline = '';
     })
     const radioBtns = document.getElementsByTagName("input");
     for (let i = 0; i < radioBtns.length; i++) {
@@ -112,16 +129,22 @@ function App() {
         otherAnswers={question.incorrect_answers}
         shuffledAnswers={question.shuffledAnswers.map(el => cleanupString(el))}
         onChange={handleChange}
+        submitted={submitted}
       />
     )
   })
 
-  console.log(category)
-  console.log(difficulty)
   return (
     <div className='quiz-container'>
       <h1 className='title'>Quizzicle</h1>
-      <Options setCategory={setCategory} setDifficulty={setDifficulty} difficulty={difficulty} category={category} getQuizQuestions={getQuizQuestions}/>
+      <Options 
+        setCategory={setCategory} 
+        setDifficulty={setDifficulty} 
+        difficulty={difficulty} 
+        category={category} 
+        getQuizQuestions={getQuizQuestions} 
+        reset={reset}
+      />
       <form onSubmit={handleSubmit}>
         {quizQuestionElements}
         {!submitted && <button className='quizBtn' data-action="check">Check Answers</button>}

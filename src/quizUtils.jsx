@@ -15,7 +15,21 @@ export function shuffle(array) {
 
   export function cleanupString(str) {
     return str
-          .replaceAll(/&quot;|&#039;|&rsquo;|&apos;/g, `'`)
+          .replaceAll(/&quot;|&#039;|&rsquo;|&apos;|&ldquo;/g, `'`)
           .replaceAll(/&amp;/g, `&`)
           .replaceAll(/&eacute;/gi, `é`)
+  }
+
+  export function findElementsByText(text) {
+    text = text.toString()
+    var elements = document.querySelectorAll("*"); // Select all elements
+    var matchingElements = [];
+  
+    for (var i = 0; i < elements.length; i++) {
+      if (elements[i].textContent.includes(text)) {
+        matchingElements.push(elements[i]);
+      }
+    }
+  
+    return matchingElements;
   }
