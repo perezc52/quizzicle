@@ -1,7 +1,7 @@
 import React from 'react'
 import Question from './components/Question'
 import Options from './components/Options'
-import { shuffle, cleanupString, findElementsByText } from './quizUtils'
+import { shuffle, cleanupString } from './quizUtils'
 
 function App() {
   
@@ -33,6 +33,8 @@ function App() {
 
     const action = document.querySelector('.quizBtn').getAttribute('data-action')
     const selectedAnswers = document.querySelectorAll('.question input[type="radio"]:checked+label')
+    let answersElements = document.querySelectorAll('.radioBtn-text')
+    let correctAnswersArray = Array.from(answersElements).filter(el => el.getAttribute('data-attribute-correct') === 'true')
 
     if(action === "check") {
       if(finishedQuiz) {
@@ -42,10 +44,7 @@ function App() {
             selectedAnswers[i].style.backgroundColor = '#29AB87'
           }else {
             selectedAnswers[i].style.backgroundColor = '#B31B1B'
-            let correctAnswer = findElementsByText(quiz[i].correct_answer)[6]
-            console.log(findElementsByText(quiz[i].correct_answer))
-            correctAnswer.style.outline = '2px solid #29AB87'
-            console.log(correctAnswer)
+            correctAnswersArray[i].style.outline = '1px solid #29AB87'
           }
         }
         setSubmitted(true)
@@ -149,7 +148,7 @@ function App() {
         {quizQuestionElements}
         {!submitted && <button className='quizBtn' data-action="check">Check Answers</button>}
         {submitted && <button className='quizBtn' data-action="play-again">Play Again</button>}
-        {submitted && <h4>You got {correct} / 5 correct answers!</h4>}
+        {submitted && <h4 className='result-message'>You got {correct} / 5 correct answers!</h4>}
       </form>
     </div>
   )

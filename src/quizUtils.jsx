@@ -20,16 +20,16 @@ export function shuffle(array) {
           .replaceAll(/&eacute;/gi, `é`)
   }
 
-  export function findElementsByText(text) {
-    text = text.toString()
-    var elements = document.querySelectorAll("*"); // Select all elements
-    var matchingElements = [];
+  // export function findElementsByText(text) {
+  //   text = text.toString()
+  //   var elements = document.querySelectorAll("*"); // Select all elements
+  //   var matchingElements = [];
   
-    for (var i = 0; i < elements.length; i++) {
-      if (elements[i].textContent.includes(text)) {
-        matchingElements.push(elements[i]);
-      }
-    }
+  //   for (var i = 0; i < elements.length; i++) {
+  //     if (elements[i].textContent.includes(text)) {
+  //       matchingElements.push(elements[i]);
+  //     }
+  //   }
   
-    return matchingElements;
-  }
+  //   return matchingElements;
+  // }
