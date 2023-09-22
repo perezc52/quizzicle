@@ -2,6 +2,7 @@
 This is a quiz game made using react with vite that pulls from the open trivia database.
 
 ![](src/assets/03.jpg)
+[Live Demo](https://100devs-quizzicle.netlify.app/)
 
 ## How It's Made:
 
