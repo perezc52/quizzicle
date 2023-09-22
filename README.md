@@ -1,7 +1,7 @@
 # Quizzicle
 This is a quiz game made using react with vite that pulls from the open trivia database.
 
-![](src/assets/quizziclegif.gif)
+![](src/assets/03.jpg)
 
 ## How It's Made:
 
